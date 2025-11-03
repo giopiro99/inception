@@ -1,0 +1,128 @@
+secrets:
+    ssl_key:                     
+        file: ../secrets/ssl/server.key
+    ssl_crt:                    
+        file: ../secrets/ssl/server.crt
+
+networks:
+    inception-network:
+        driver: bridge
+
+services:
+    nginx:
+        secrets:
+            - ssl_key
+            - ssl_crt
+        build: requirements/nginx
+        container_name: nginx-container
+        image: nginx
+        ports:
+            - "443:443"
+        volumes:
+            - wordpress_data:/var/www/index
+            - html_data:/usr/share/nginx/html
+            - adminer_data:/var/www/adminer
+        depends_on:
+            - wordpress
+        restart: always
+        networks:
+            - inception-network
+    wordpress:
+        build: requirements/wordpress
+        container_name: wp-php
+        image: wp
+        volumes:
+            - wordpress_data:/var/www/index
+        env_file: .env
+        depends_on:
+            - mariadb
+            - redis
+        restart: always
+        networks:
+            - inception-network
+    mariadb:
+        build: requirements/mariadb
+        container_name: mariadb-container
+        image: mariadb
+        env_file: .env
+        expose:
+            - "3306"
+        volumes:
+            - mariadb_data:/var/lib/mysql
+        restart: always
+        networks:
+            - inception-network
+    redis:
+        build: requirements/redis
+        container_name: redis-container
+        image: redis
+        expose:
+            - "6379"
+        restart: always
+        networks:
+            - inception-network
+    ftp:
+        build: requirements/ftp
+        container_name: ftp_server
+        image: ftp
+        ports:
+            - "21:21"
+            - "30000-30009:30000-30009"
+        env_file: .env
+        restart: always
+        networks:
+            - inception-network
+        volumes:
+            - wordpress_data:/srv/ftp
+            - html_data:/srv
+        depends_on:
+            - wordpress
+    adminer:
+        build: requirements/adminer
+        container_name: adminer_container
+        image: adminer
+        env_file: .env
+        restart: always
+        networks:
+            - inception-network
+        volumes:
+            - adminer_data:/var/www/adminer
+    portainer:
+        build: requirements/portainer
+        image: portainer/portainer-ce:latest
+        container_name: portainer_container
+        env_file: .env
+        restart: always
+        ports:
+            - "9443"
+        networks:
+            - inception-network
+        volumes:
+            - portainer_data:/data
+            - /var/run/docker.sock:/var/run/docker.sock
+        depends_on:
+            - wordpress
+
+volumes:
+    mariadb_data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: ../../data/mariadb
+    wordpress_data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: ../../data/wordpress
+    html_data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: ../../data/html
+    adminer_data:
+        driver: local
+    portainer_data:
+        driver: local
