@@ -93,7 +93,7 @@ services:
         container_name: portainer_container
         env_file: .env
         restart: always
-        ports:
+        expose:
             - "9443"
         networks:
             - inception-network
