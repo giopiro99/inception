@@ -42,7 +42,7 @@ down:
 
 fclean: down
 	sudo rm -rf $(DATA_DIR)
-	sudo docker system prune -a
+	sudo docker  system prune -a -f
 
 re: fclean all
 

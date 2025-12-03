@@ -2,65 +2,49 @@
 
 cd /var/www/index
 
-# Verifica se il file wp-cli.phar non esiste
-if [ ! -f wp-cli.phar ]; then
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    chmod +x wp-cli.phar
-    echo "wp-cli.phar downloaded"
-fi
+# Download and set up WP-CLI
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+echo "wp-cli.phar downloaded"
 
-# Verifica se WordPress non è già stato scaricato
-if [ ! -d "wp-content" ]; then
-    ./wp-cli.phar core download --allow-root
-    echo "WordPress downloaded"
-fi
+./wp-cli.phar core download --allow-root
+echo "WordPress downloaded"
 
-# Verifica se il file di configurazione di WordPress non esiste già
-if [ ! -f "wp-config.php" ]; then
-    ./wp-cli.phar config create \
+# Crea wp-config.php file
+./wp-cli.phar config create \
     --dbname=${WORDPRESS_DB_NAME} \
     --dbuser=${WORDPRESS_DB_USER} \
     --dbpass=${WORDPRESS_DB_PASSWORD} \
     --dbhost=mariadb --allow-root
-    echo "wp-config.php created"
-fi
+echo "wp-config.php created"
 
-if ! ./wp-cli.phar core is-installed --allow-root; then
-    echo "Installing WordPress for the first time..."
-    ./wp-cli.phar core install \
-        --url="gpirozzi.42.fr" \
-        --title="inception" \
-        --admin_user="${WORDPRESS_ADMIN_USER}" \
-        --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
-        --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
-        --allow-root
-    echo "WordPress installed successfully!"
-else
-    echo "WordPress is already installed, skipping installation."
-fi
+# Installa WordPress
+echo "Installing WordPress for the first time..."
+./wp-cli.phar core install \
+    --url="gpirozzi.42.fr" \
+    --title="inception" \
+    --admin_user="${WORDPRESS_ADMIN_USER}" \
+    --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
+    --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
+    --allow-root
+echo "WordPress installed successfully!"
 
-
-# Verifica se l'utente amministratore non esiste già
-if [ ! ./wp-cli.phar user get ${WORDPRESS_ADMIN_USER} --allow-root &> /dev/null ]; then
-    ./wp-cli.phar user create \
+# Crea l'utente admin
+./wp-cli.phar user create \
     ${WORDPRESS_ADMIN_USER} \
     ${WORDPRESS_ADMIN_EMAIL} \
     --user_pass=${WORDPRESS_ADMIN_PASSWORD} \
     --role=administrator --allow-root
-    echo "Admin user created"
-fi
+echo "Admin user created"
 
-if ! ./wp-cli.phar user get "${WORDPRESS_USER}" --allow-root > /dev/null 2>&1; then
-    echo "Creating new WordPress user '${WORDPRESS_USER}'..."
-    ./wp-cli.phar user create \
-        "${WORDPRESS_USER}" "${WORDPRESS_USER_EMAIL}" \
-        --user_pass="${WORDPRESS_USER_PASSWORD}" \
-        --role=subscriber \
-        --allow-root
-    echo "User '${WORDPRESS_USER}' created successfully!"
-else
-    echo "User '${WORDPRESS_USER}' already exists, skipping creation."
-fi
+# Crea un nuovo utente WordPress
+echo "Creating new WordPress user '${WORDPRESS_USER}'..."
+./wp-cli.phar user create \
+    "${WORDPRESS_USER}" "${WORDPRESS_USER_EMAIL}" \
+    --user_pass="${WORDPRESS_USER_PASSWORD}" \
+    --role=subscriber \
+    --allow-root
+echo "User '${WORDPRESS_USER}' created successfully!"
 
 #setto le variabili per redis e installo il plugin redis
 ./wp-cli.phar config set WP_REDIS_HOST redis --allow-root

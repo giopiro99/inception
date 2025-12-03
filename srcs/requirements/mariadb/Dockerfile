@@ -10,7 +10,9 @@ RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 # Copia il file di configurazione personalizzato di MariaDB
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# Copia lo script SQL di inizializzazione (user, database, ecc.)
+RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+
+# Copia lo script SQL di inizializzazione (user, database)
 COPY tools/init.sql /tmp/init.sql
 
 # Copia lo script di avvio personalizzato

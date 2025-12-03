@@ -1,21 +1,26 @@
+# secrets per i certificati ssl inseriti nel container nginx in modo sicuro grazie a docker secrets
 secrets:
     ssl_key:                     
         file: ../secrets/ssl/server.key
     ssl_crt:                    
         file: ../secrets/ssl/server.crt
 
+# definisco la rete bridge per la comunicazione tra i container e la rinominazione
 networks:
     inception-network:
         driver: bridge
 
 services:
     nginx:
+        # secrets per ssl da usare nel container
         secrets:
             - ssl_key
             - ssl_crt
+        # percorso del Dockerfile di nginx
         build: requirements/nginx
         container_name: nginx-container
         image: nginx
+        # espondo la porta 443 esternamente
         ports:
             - "443:443"
         volumes:
@@ -45,6 +50,7 @@ services:
         container_name: mariadb-container
         image: mariadb
         env_file: .env
+        # espondo la porta 3306 solo internamente alla rete docker
         expose:
             - "3306"
         volumes:
@@ -103,12 +109,15 @@ services:
         depends_on:
             - wordpress
 
+# creo de dei volumi per i dati persistenti
 volumes:
     mariadb_data:
         driver: local
         driver_opts:
             type: none
+            # bind mount per collegare una cartella sul host nel container
             o: bind
+            # percorso assoluto della cartella sul host
             device: ../../data/mariadb
     wordpress_data:
         driver: local
@@ -123,6 +132,7 @@ volumes:
             o: bind
             device: ../../data/html
     adminer_data:
+        # definisco il volume senza opzioni di bind mount
         driver: local
     portainer_data:
         driver: local

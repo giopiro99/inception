@@ -16,4 +16,5 @@ COPY /conf/server.conf /etc/nginx/nginx.conf
 # Comando di default quando il container parte:
 # avvia Nginx in foreground
 # in modo che il container resti attivo.
+# Il flag "-g 'daemon off;'" dice a Nginx di non andare in background.
 CMD ["nginx", "-g", "daemon off;"]
