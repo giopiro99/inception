@@ -20,7 +20,7 @@ Nota: Accetta l'avviso di sicurezza del browser poiché il certificato è autofi
 make build Esegue solo la build delle immagini Docker.
 make downFerma e rimuove i container.make cleanFerma i container e rimuove immagini/network.make fcleanReset Totale: Rimuove container, immagini, network e volumi (dati persi).
 Struttura:
-'''text'''
+```text
 ├── Makefile
 ├── srcs/
 │   ├── docker-compose.yml
