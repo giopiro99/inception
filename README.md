@@ -51,8 +51,8 @@ git clone [https://github.com/giopiro99/inception.git](https://github.com/giopir
 cd inception
 ```
 
+### Command Description
 ```text
-Command,Description
 make: Builds images and starts the whole infrastructure.
 make build: Rebuilds the Docker images without starting.
 make stop: Pauses the containers.
