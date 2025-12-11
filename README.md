@@ -53,13 +53,13 @@ cd inception
 
 ```text
 Command,Description
-make,Builds images and starts the whole infrastructure.
-make build,Rebuilds the Docker images without starting.
-make stop,Pauses the containers.
-make down,Stops and removes containers and networks.
-make clean,"Removes containers, networks, and images."
-make fclean,Deep Clean: Removes everything including Volumes (Data is lost).
-make re,Performs a full rebuild (fclean + all).
+make: Builds images and starts the whole infrastructure.
+make build: Rebuilds the Docker images without starting.
+make stop: Pauses the containers.
+make down: Stops and removes containers and networks.
+make clean: "Removes containers, networks, and images."
+make fclean: Deep Clean: Removes everything including Volumes (Data is lost).
+make re: Performs a full rebuild (fclean + all).
 ```
 
 ```text
