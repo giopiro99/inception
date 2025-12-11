@@ -1,10 +1,17 @@
-Panoramica del ProgettoIl progetto richiede di configurare un'infrastruttura specifica composta da tre container principali che comunicano tra loro all'interno di una rete Docker dedicata.
-Host OS: Linux (VM)Virtualizzazione: Docker & Docker ComposeContainer Debian.
-L'Architettura L'infrastruttura è composta dai seguenti servizi, ognuno in un container separato: NGINX: Agisce come entry point sicuro (HTTPS), gestendo i certificati SSL/TLS e reindirizzando il traffico.
-WordPress: Il CMS, configurato per girare con PHP-FPM.MariaDB: Il database relazionale per memorizzare i dati di WordPress.Tutti i container sono costruiti da zero utilizzando Dockerfiles personalizzati (l'uso di immagini pronte da DockerHub con setup predefiniti è vietato).
-Stack Tecnologico Docker Engine: Per la containerizzazione.Docker Compose: Per l'orchestrazione dei multi-container.
-NGINX: Web server e Reverse Proxy.MariaDB: Database SQL.WordPress + PHP-FPM: Content Management System.OpenSSL: Per la generazione di certificati SSL autofirmati (TLSv1.2/1.3).
-Make: Per l'automazione dei comandi di build e run.
+Panoramica del Progetto:
+-Il progetto richiede di configurare un'infrastruttura specifica composta da tre container principali che comunicano tra loro all'interno di una rete Docker dedicata.
+Host OS: Linux (VM)Virtualizzazione:
+-Docker & Docker ComposeContainer Debian.
+L'Architettura L'infrastruttura è composta dai seguenti servizi, ognuno in un container separato: 
+-NGINX: Agisce come entry point sicuro (HTTPS), gestendo i certificati SSL/TLS e reindirizzando il traffico.
+-WordPress: Il CMS, configurato per girare con PHP-FPM.MariaDB: Il database relazionale per memorizzare i dati di WordPress.
+Tutti i container sono costruiti da zero utilizzando Dockerfiles personalizzati (l'uso di immagini pronte da DockerHub con setup predefiniti è vietato).
+Stack Tecnologico Docker Engine: Per la containerizzazione.
+Docker Compose: Per l'orchestrazione dei multi-container.
+-NGINX: Web server e Reverse Proxy.
+-MariaDB: Database SQL.WordPress + PHP-FPM: Content Management System.
+-OpenSSL: Per la generazione di certificati SSL autofirmati (TLSv1.2/1.3).
+-Make: Per l'automazione dei comandi di build e run.
 Caratteristiche e Regole: L'infrastruttura segue regole rigorose per garantire sicurezza e persistenza:Network Isolation: I container comunicano solo attraverso una rete Docker interna.
 Solo la porta 443 (HTTPS) è esposta all'host.Data Persistence: I volumi Docker sono utilizzati per garantire che i dati del Database e i file di WordPress non vadano persi in caso di riavvio dei container.Security:Nessuna password è hardcodata nei Dockerfile;
 vengono utilizzate variabili d'ambiente (.env).Accesso solo via HTTPS.Automazione: Un Makefile gestisce l'intero ciclo di vita dell'applicazione.
