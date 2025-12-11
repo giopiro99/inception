@@ -37,6 +37,7 @@ Struttura:
 │   │       ├── Dockerfile
 │   │       ├── conf/
 │   │       └── tools/
+```
 Cosa ho imparato Docker Deep Dive: Come scrivere Dockerfile efficienti, minimizzare i layer e gestire il PID 1.
 Service Orchestration: Gestione delle dipendenze tra servizi (es. WordPress deve aspettare che MariaDB sia pronto).
 System Administration: Configurazione manuale di NGINX e PHP-FPM, gestione dei permessi utente e dei processi.
