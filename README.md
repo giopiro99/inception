@@ -1,6 +1,8 @@
 # 🐳 Inception - System Administration & Docker
 
-**Inception** is a System Administration project from the **42 School** curriculum. The goal is to create a small infrastructure composed of several containerized services, managed via **Docker Compose**, building a deep understanding of Docker orchestration.
+**Inception** is a System Administration project from the **42 School** curriculum.
+
+The goal is to create a small infrastructure composed of several containerized services, managed via **Docker Compose**, building a deep understanding of Docker orchestration.
 
 ## 📑 Project Overview
 
